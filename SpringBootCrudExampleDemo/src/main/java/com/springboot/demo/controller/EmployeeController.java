@@ -3,6 +3,8 @@ package com.springboot.demo.controller;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.demo.EmployeeService.EmployeeService;
+import com.springboot.demo.custom.beans.CustomErrorMessage;
+import com.springboot.demo.custom.beans.CustomSucessMessage;
 import com.springboot.demo.model.Employee;
 
 @RestController
@@ -20,14 +24,26 @@ public class EmployeeController {
 	EmployeeService employeeService;
 	
 	@PostMapping("/employee")
-	public void addEmployee(@RequestBody Employee emp)
+	public ResponseEntity<?> addEmployee(@RequestBody Employee emp)
 	{
-		employeeService.createEmployee(emp);
+		try
+		{
+			employeeService.createEmployee(emp);
+			return new ResponseEntity<>(new CustomSucessMessage("Employee created sucessfully", HttpStatus.CREATED.toString()),HttpStatus.CREATED);
+	
+		}catch(Exception e) {
+			System.out.println("----"+e.getMessage());
+			return new ResponseEntity<>(new CustomErrorMessage("Some thing went worng please check with Admin",HttpStatus.INTERNAL_SERVER_ERROR.toString()),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
 	}
 	@GetMapping("/employee/{id}")
-	public Optional<Employee> findEmployeeById(@PathVariable Long id)
+	public ResponseEntity<?> findEmployeeById(@PathVariable Long id)
 	{
-		return employeeService.findById(id);
+		Optional<Employee> employee=employeeService.findById(id);
+		if(employee.isEmpty())
+			return new ResponseEntity<>(new CustomErrorMessage("Data not found",HttpStatus.NOT_FOUND.toString()),HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(employee.get(),HttpStatus.FOUND);
 	}
 	@DeleteMapping("/employee/{id}")
 	public void deleteEmployeeById(@PathVariable Long id)
