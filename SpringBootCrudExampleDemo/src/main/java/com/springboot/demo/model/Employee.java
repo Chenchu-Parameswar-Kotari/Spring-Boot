@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +17,7 @@ import lombok.NoArgsConstructor;
 @Table
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class Employee {
 	
@@ -25,12 +27,5 @@ public class Employee {
 	private Long id;
 	private String Address;
 	private Long mobileNo;
-
-	public Employee(String name, Long id, String address, Long mobileNo) {
-		super();
-		this.name = name;
-		this.id = id;
-		Address = address;
-		this.mobileNo = mobileNo;
-	}
+	
 }
