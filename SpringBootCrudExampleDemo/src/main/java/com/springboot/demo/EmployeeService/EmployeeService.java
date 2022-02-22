@@ -19,6 +19,10 @@ public class EmployeeService {
 	{
 		employeeRepository.save(emp);
 	}
+//	public Optional<Employee> getAllEmployees() 
+//	{
+//		return employeeRepository.findAll();
+//	}
 
 	public Optional<Employee> findById(Long id) 
 	{
