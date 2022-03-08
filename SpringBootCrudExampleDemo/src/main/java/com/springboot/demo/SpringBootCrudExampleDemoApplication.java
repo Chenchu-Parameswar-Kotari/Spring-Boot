@@ -9,5 +9,4 @@ public class SpringBootCrudExampleDemoApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootCrudExampleDemoApplication.class, args);
 	}
-
 }
